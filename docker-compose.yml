@@ -12,32 +12,28 @@ kafka:
     - "9092:9092"
   links:
     - zookeeper:zookeeper
-# nimbus:
-#   build: ./storm/framework/storm-nimbus
-#   restart: always
-#   ports:
-#     - "49772:3772"
-#     - "49773:3773"
-#     - "49627:6627"
-#     - "22"
-#   links:
-#     - zookeeper:zk
-# supervisor:
-#   build: ./storm/framework/storm-supervisor
-#   restart: always
-#   ports:
-#     - "8000"
-#     - "22"
-#   links:
-#     - nimbus:nimbus
-#     - zookeeper:zk
-#     - mongodb
-# stormui:
-#   build: ./storm/framework/storm-ui
-#   restart: always
-#   ports:
-#     - "22"
-#     - "8080:8080"
-#   links:
-#     - nimbus:nimbus
-#     - zookeeper:zk
+nimbus:
+  build: ./storm/framework/storm-nimbus
+  restart: always
+  ports:
+    - "3772:3772"
+    - "3773:3773"
+    - "6627:6627"
+  links:
+    - zookeeper:zk
+supervisor:
+  build: ./storm/framework/storm-supervisor
+  restart: always
+  ports:
+    - "8000"
+  links:
+    - nimbus:nimbus
+    - zookeeper:zk
+stormui:
+  build: ./storm/framework/storm-ui
+  restart: always
+  ports:
+    - "8080:8080"
+  links:
+    - nimbus:nimbus
+    - zookeeper:zk
