@@ -32,15 +32,7 @@ public class KafkaProducer {
             "four score and seven years ago",
             "snow white and the seven dwarfs",
             "i am at two with nature",
-            "a picture is worth a thousand words",
-            "there is no place like home",
-            "the early bird catches the worm",
-            "practice makes perfect",
-            "easy come easy go",
-            "all good things must come to an end",
-            "beauty is in the eye of the beholder",
-            "you cannot judge a book by its cover",
-            "the grass is always greener on the other side of the hill"
+            "a picture is worth a thousand words"
     };
 
     public static void main(String [] args) {

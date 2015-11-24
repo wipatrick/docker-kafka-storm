@@ -7,6 +7,10 @@ import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.Config;
 import backtype.storm.tuple.Fields;
+import com.biggis.storm.bolt.CounterBolt;
+import com.biggis.storm.bolt.RankerBolt;
+import com.biggis.storm.bolt.SplitterBolt;
+import com.biggis.storm.spout.DataSourceSpout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.*;
@@ -22,15 +26,15 @@ import storm.kafka.*;
 public class WordCountTopology {
 
     private static final Logger LOG = LoggerFactory.getLogger(WordCountTopology.class);
+
     private static final String DATASOURCE_SPOUT_ID = "datasource-spout";
     private static final String KAFKA_SPOUT_ID = "kafka-spout";
     private static final String SPLITTER_BOLT_ID = "splitter-bolt";
     private static final String COUNTER_BOLT_ID = "counter-bolt";
     private static final String RANKER_BOLT_ID = "ranker-bolt";
-    private static final String WRITER_BOLT_ID = "writer-bolt";
-    private static final String TOPOLOGY_NAME = "geo-topology";
-    private BrokerHosts brokerHosts;
+    private static final String TOPOLOGY_NAME = "wordcount-topology";
 
+    private BrokerHosts brokerHosts;
 
     public WordCountTopology(String ZK_HOST, String ZK_PORT) {
         brokerHosts = new ZkHosts(ZK_HOST + ":" + ZK_PORT);
@@ -53,15 +57,9 @@ public class WordCountTopology {
         TopologyBuilder builder = new TopologyBuilder();
 
         builder.setSpout(KAFKA_SPOUT_ID, new KafkaSpout(kafkaConf));
-        builder.setBolt(SPLITTER_BOLT_ID, new SplitterBolt(), 4)
-                .shuffleGrouping(KAFKA_SPOUT_ID);
-        builder.setBolt(COUNTER_BOLT_ID, new CounterBolt(), 4)
-                .setNumTasks(4)
-                .fieldsGrouping(SPLITTER_BOLT_ID, new Fields("words"));
-        builder.setBolt(RANKER_BOLT_ID, new RankerBolt())
-                .globalGrouping(COUNTER_BOLT_ID);
-        builder.setBolt(WRITER_BOLT_ID, new WriterBolt())
-                .globalGrouping(RANKER_BOLT_ID);
+        builder.setBolt(SPLITTER_BOLT_ID, new SplitterBolt(), 4).shuffleGrouping(KAFKA_SPOUT_ID);
+        builder.setBolt(COUNTER_BOLT_ID, new CounterBolt(), 4).fieldsGrouping(SPLITTER_BOLT_ID, new Fields("word"));
+        builder.setBolt(RANKER_BOLT_ID, new RankerBolt()).globalGrouping(COUNTER_BOLT_ID);
 
         return builder.createTopology();
     }
@@ -78,15 +76,9 @@ public class WordCountTopology {
         TopologyBuilder builder = new TopologyBuilder();
 
         builder.setSpout(DATASOURCE_SPOUT_ID, new DataSourceSpout());
-        builder.setBolt(SPLITTER_BOLT_ID, new SplitterBolt(), 4)
-                .shuffleGrouping(DATASOURCE_SPOUT_ID);
-        builder.setBolt(COUNTER_BOLT_ID, new CounterBolt(), 4)
-                .setNumTasks(4)
-                .fieldsGrouping(SPLITTER_BOLT_ID, new Fields("words"));
-        builder.setBolt(RANKER_BOLT_ID, new RankerBolt())
-                .globalGrouping(COUNTER_BOLT_ID);
-        builder.setBolt(WRITER_BOLT_ID, new WriterBolt())
-                .globalGrouping(RANKER_BOLT_ID);
+        builder.setBolt(SPLITTER_BOLT_ID, new SplitterBolt(), 4).shuffleGrouping(DATASOURCE_SPOUT_ID);
+        builder.setBolt(COUNTER_BOLT_ID, new CounterBolt(), 4).fieldsGrouping(SPLITTER_BOLT_ID, new Fields("word"));
+        builder.setBolt(RANKER_BOLT_ID, new RankerBolt()).globalGrouping(COUNTER_BOLT_ID);
 
         return builder.createTopology();
     }
@@ -129,7 +121,7 @@ public class WordCountTopology {
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology(TOPOLOGY_NAME, conf, new WordCountTopology().buildTopology());
 
-            Thread.sleep(15000);
+            Thread.sleep(10000);
             cluster.shutdown();
         }
     }
