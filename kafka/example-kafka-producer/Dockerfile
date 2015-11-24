@@ -16,4 +16,4 @@ ADD . /usr/src/kafka-producer
 RUN mvn verify
 
 ADD start.sh /usr/src/kafka-producer/start.sh
-ENTRYPOINT["start.sh"]
+ENTRYPOINT ["/usr/src/kafka-producer/start.sh"]

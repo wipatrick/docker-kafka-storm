@@ -4,7 +4,6 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * KafkaProducer Example
@@ -26,7 +25,6 @@ public class KafkaProducer {
     static String PARTITION_KEY;
     static ProducerConfig conf;
     static Producer<String, String> producer;
-    static Random rand;
 
     static String [] sentences = {
             "the cow jumped over the moon",
@@ -65,7 +63,6 @@ public class KafkaProducer {
         runThread = true;
         //PARTITION_KEY = "wordcount";
 
-
         Properties props = new Properties();
         props.put("metadata.broker.list", BROKER_HOST + ":" + BROKER_PORT);
         props.put("serializer.class", "kafka.serializer.StringEncoder");
@@ -79,7 +76,7 @@ public class KafkaProducer {
                 while (runThread){
                     if(COUNTER_START < COUNTER_END) {
 
-                        String sentence = sentences[rand.nextInt(sentences.length)];
+                        String sentence = sentences[(int)(Math.random()*(sentences.length-1))];
 
                         /**
                          * Without PARTITION_KEY

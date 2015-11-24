@@ -22,7 +22,7 @@ ENV NIMBUS_HOST 192.168.99.100
 ENV NIMBUS_THRIFT_PORT 49627
 
 COPY target/biggis-storm-1.0-jar-with-dependencies.jar /usr/bin/
-COPY start.sh /usr/bin/
+COPY start.sh /usr/bin/start.sh
 
 WORKDIR /usr/bin/
 ENTRYPOINT ["start.sh"]
