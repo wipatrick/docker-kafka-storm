@@ -11,6 +11,7 @@ This project has been tested with the following setup:
 * Docker Engine 1.9.0
 * Docker Compose 1.5.0
 * Virtual Box 5.0.8
+
 For the ease of getting started on Windows & Mac OSx, these users should make use of the [Docker Toolbox](https://www.docker.com/docker-toolbox) in order to create a running Docker Host (Docker Machine) instance with [Docker Engine](https://www.docker.com/docker-engine) as well as [Docker Compose](https://www.docker.com/docker-compose) already installed on your desired virtual environment provider.
 
 For this project the following versions of Apache Kafka, Apache Zookeeper and Apache Storm are used:
