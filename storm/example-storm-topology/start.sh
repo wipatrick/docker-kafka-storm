@@ -2,7 +2,7 @@
 
 case "$1" in
         submit)
-            /usr/bin/storm jar biggis-storm-1.0-jar-with-dependencies.jar $MAINCLASS $TOPOLOGY_NAME $ZK_HOST $ZK_PORT $TOPIC -c nimbus.host=$NIMBUS_HOST -c nimbus.thrift.port=$NIMBUS_THRIFT_PORT
+            /usr/bin/storm jar example-storm-topology-1.0-SNAPSHOT-jar-with-dependencies.jar $MAINCLASS $TOPOLOGY_NAME $ZK_HOST $ZK_PORT $TOPIC -c nimbus.host=$NIMBUS_HOST -c nimbus.thrift.port=$NIMBUS_THRIFT_PORT
             ;;
 
         kill)
