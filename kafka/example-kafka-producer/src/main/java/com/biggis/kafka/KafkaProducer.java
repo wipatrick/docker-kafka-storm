@@ -1,5 +1,6 @@
 package com.biggis.kafka;
 
+import com.biggis.kafka.helper.Utils;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
@@ -87,11 +88,7 @@ public class KafkaProducer {
                         producer.send(message);
                         COUNTER_START++;
 
-                        try {
-                            Thread.sleep(SLEEP_TIME_IN_MILLIS);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        Utils.waitForMillis(SLEEP_TIME_IN_MILLIS);
                     }
                     else {
                         runThread = false;
