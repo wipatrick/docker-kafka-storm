@@ -1,20 +1,29 @@
-FROM ubuntu:trusty
+FROM maven:3.2.5-jdk-8u40
 
 MAINTAINER wipatrick
 
 RUN apt-get update && \
-    apt-get install -y unzip wget openjdk-7-jre-headless python
+    apt-get install -y unzip wget
 
 RUN wget -q -O - http://mirrors.sonic.net/apache/storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz | tar -xzf - -C /opt
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/
 ENV STORM_HOME /opt/apache-storm-0.9.4
 
 RUN groupadd storm; useradd --gid storm --home-dir /home/storm --create-home --shell /bin/bash storm; chown -R storm:storm $STORM_HOME; mkdir /var/log/storm ; chown -R storm:storm /var/log/storm
 RUN ln -s $STORM_HOME/bin/storm /usr/bin/storm
 
-COPY target/example-storm-topology-1.0-SNAPSHOT-jar-with-dependencies.jar /usr/bin/example-storm-topology-1.0-SNAPSHOT-jar-with-dependencies.jar
-COPY start.sh /usr/bin/start.sh
+RUN mkdir --parents /usr/src/storm-topology
+WORKDIR /usr/src/storm-topology
 
-WORKDIR /usr/bin/
-ENTRYPOINT ["start.sh"]
+# Add POM
+ADD pom.xml /usr/src/storm-topology
+
+# Get all dependencies
+RUN mvn verify clean --fail-never
+
+# Add rest of code & build
+ADD . /usr/src/storm-topology
+RUN mvn verify
+
+ADD start.sh /usr/src/storm-topology/start.sh
+ENTRYPOINT ["/usr/src/storm-topology/start.sh"]

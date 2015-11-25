@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.*;
 
+import java.util.Arrays;
+
 /**
  * WordCountTopology
  *
@@ -26,14 +28,11 @@ import storm.kafka.*;
 public class WordCountTopology {
 
     private static final Logger LOG = LoggerFactory.getLogger(WordCountTopology.class);
-
     private static final String DATASOURCE_SPOUT_ID = "datasource-spout";
     private static final String KAFKA_SPOUT_ID = "kafka-spout";
     private static final String SPLITTER_BOLT_ID = "splitter-bolt";
     private static final String COUNTER_BOLT_ID = "counter-bolt";
     private static final String RANKER_BOLT_ID = "ranker-bolt";
-    private static final String TOPOLOGY_NAME = "wordcount-topology";
-
     private BrokerHosts brokerHosts;
 
     public WordCountTopology(String ZK_HOST, String ZK_PORT) {
@@ -86,9 +85,10 @@ public class WordCountTopology {
     public static void main(String[] args) throws Exception {
 
         Config conf = new Config();
+        String TOPOLOGY_NAME;
 
         if (args != null && args.length > 0) {
-
+            TOPOLOGY_NAME = args[0];
             /**
              * Remote deployment as part of Docker Compose multi-application setup
              *
@@ -98,25 +98,34 @@ public class WordCountTopology {
              * @TOPIC:               Kafka Topic which this Storm topology is consuming from
              */
             LOG.info("Submitting topology " + TOPOLOGY_NAME + " to remote cluster.");
-            String ZK_HOST = args[0];
-            String ZK_PORT = args[1];
-            String TOPIC = args[2];
+            String ZK_HOST = args[1];
+            int ZK_PORT = Integer.parseInt(args[2]);
+            String TOPIC = args[3];
+            String NIMBUS_HOST = args[4];
+            int NIMBUS_THRIFT_PORT = Integer.parseInt(args[5]);
 
             conf.setDebug(false);
-            conf.setNumWorkers(3);
+            conf.setNumWorkers(2);
+            conf.setMaxTaskParallelism(5);
+            conf.put(Config.NIMBUS_HOST, NIMBUS_HOST);
+            conf.put(Config.NIMBUS_THRIFT_PORT, NIMBUS_THRIFT_PORT);
+            conf.put(Config.STORM_ZOOKEEPER_PORT, ZK_PORT);
+            conf.put(Config.STORM_ZOOKEEPER_SERVERS, Arrays.asList(ZK_HOST));
 
-            WordCountTopology wordCountTopology = new WordCountTopology(ZK_HOST, ZK_PORT);
+            WordCountTopology wordCountTopology = new WordCountTopology(ZK_HOST, String.valueOf(ZK_PORT));
             StormSubmitter.submitTopology(TOPOLOGY_NAME, conf, wordCountTopology.buildTopology(TOPIC));
 
         }
         else {
+            TOPOLOGY_NAME = "wordcount-topology";
             /**
              * Local mode (only for testing purposes)
              */
             LOG.info("Starting topology " + TOPOLOGY_NAME + " in LocalMode.");
 
             conf.setDebug(false);
-            conf.setMaxTaskParallelism(3);
+            conf.setNumWorkers(2);
+            conf.setMaxTaskParallelism(2);
 
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology(TOPOLOGY_NAME, conf, new WordCountTopology().buildTopology());
