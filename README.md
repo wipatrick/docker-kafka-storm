@@ -35,9 +35,8 @@ The ```build.sh``` executes the Dockerfiles for building the ***kafka-producer**
 
 Once the images are built, you can start the multi-container application stack by running ```compose.sh``` with one of two options. To run in foreground chose ```start-foreground```. To run in detached mode chose ```start-background```. For debugging and learning purposes it is good to run in the foreground.
 ```
-./compose.sh
+➜  docker-kafka-storm git:(master) ./compose.sh
 Usage: ./compose.sh {start-foreground|start-background|stop}
-
 ➜  docker-kafka-storm git:(master) ./compose.sh start-foreground
 Creating dockerkafkastorm_zookeeper_1
 Creating dockerkafkastorm_nimbus_1
@@ -128,7 +127,7 @@ fcdde25d83c8
 8ddbb82fe8cf
 f580b44212bc
 86c5a3bb53ed
-docker ps -a
+➜  docker-kafka-storm git:(master) docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
 ```
