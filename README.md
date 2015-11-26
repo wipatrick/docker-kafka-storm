@@ -20,7 +20,28 @@ For this project the following versions of Apache Kafka, Apache Zookeeper and Ap
 * Apache Storm 0.9.4
 
 ## Getting Started
-***NOTE***: It is recommended to use a terminal multiplexer such as [tmux](https://tmux.github.io/).
+***GENERAL NOTES***: 
+* It is recommended to use a terminal multiplexer such as [tmux](https://tmux.github.io/)
+* For ***Mac OSx/Windows*** user: make sure that you started your [Docker Machine](https://docs.docker.com/machine/get-started/) correctly and that you exposed the environment variables to talk to the Docker daemon inside the VM.
+```shell
+➜  ~ docker-machine start <name>
+Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.
+➜  ~  docker-machine ls
+NAME         ACTIVE   DRIVER       STATE     URL                         SWARM
+<name>   -        virtualbox   Running   tcp://192.168.99.100:2376
+➜  ~  docker-machine env <name>
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/<user>/.docker/machine/machines/<name>"
+export DOCKER_MACHINE_NAME="<name>"
+# Run this command to configure your shell:
+# eval "$(docker-machine env <name>)"
+➜  ~  eval "$(docker-machine env <name>)"
+➜  ~  docker info
+Containers: 0
+Images: 0
+Server Version: 1.9.0
+```
 
 Start off by cloning the repository to your local workplace.
 ```shell
@@ -54,7 +75,7 @@ Once the multi-container application stack is up and running you first need to c
 Created topic "wordcount".
 ```
 
-Then, the ```WordCountTopology``` is submitted to the "cluster" by calling ```submit-storm-topology.sh```. Additionally you will have to pass the ***com.example.MainClass***, ***topology-name*** and ***topic*** as arguments, e.g. ```./submit-storm-topology.sh <com.example.MainClass> <topology-name> <topic>```. You can go and check the Storm UI http://DOCKER_HOST_IP:8080 and see the deployed topology.
+Then, the ```WordCountTopology``` is submitted to the "cluster" by calling ```submit-storm-topology.sh```. Additionally you will have to pass the ***com.example.MainClass***, ***topology-name*** and ***topic*** as arguments, e.g. ```./submit-storm-topology.sh <com.example.MainClass> <topology-name> <topic>```. You can go and check the Storm UI http://DOCKER_HOST_IP:8080 and see the deployed topology. (Note: Native Linux OS users can see the Storm UI under http://localhost:8080).
 
 ***NOTE***: **Sometimes it takes a bit for the Storm UI to successfully load.**
 ```shell
