@@ -66,7 +66,7 @@ Then, the ```WordCountTopology``` is submitted to the "cluster" by calling ```su
 1860 [main] INFO  backtype.storm.StormSubmitter - Finished submitting topology: wordcount-topology
 ```
 
-Start the ```KafkaProducer``` by executing the ```start-kafka-producer.sh```. Additionally you will have to pass the ***topic***, ***count of produced messages*** and the ***time in milliseconds between two produced messages*** as arguments, e.g. ```./start-kafka-producer.sh <topic> <count> <sleepTimeInMillis>```.
+Start the ```KafkaProducer``` by executing the ```start-kafka-producer.sh```. Additionally you will have to pass the ***topic***, ***number of produced messages*** and the ***time in milliseconds between two produced messages*** as arguments, e.g. ```./start-kafka-producer.sh <topic> <count> <sleepTimeInMillis>```.
 ```
 ➜  docker-kafka-storm git:(master) ./start-kafka-producer.sh wordcount 5000 500
 ...
