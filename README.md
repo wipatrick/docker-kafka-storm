@@ -28,12 +28,14 @@ git clone https://github.com/wipatrick/docker-kafka-storm.git
 cd docker-kafka-storm
 ```
 
-The ```build.sh``` executes the Dockerfiles for building the ***kafka-producer*** and the ***storm-topology*** image as well as the images in specified within the ```docker-compose.yml``` file.
+The ```build.sh``` executes the Dockerfiles stored under kafka/example-kafka-producer/ for building the ***kafka-producer*** and under storm/example-storm-topology for building the ***storm-topology*** image as well as the images in specified within the ```docker-compose.yml``` file. If you make changes to the source code of either the ```KafkaProducer``` or the ```WordCountTopology``` after you have initially build the images, you have to rebuild the corresponding image by setting the option to ```kafka-producer``` or ```storm-topology```, e.g. you made changes to the ```KafkaProducer```, so you would have to ```./build.sh kafka-producer```.
 ```
 ➜  docker-kafka-storm git:(master) ./build.sh
+Usage: ./build.sh {initial|kafka-producer|storm-topology}
+➜  docker-kafka-storm git:(master) ./build.sh initial
 ```
 
-Once the images are built, you can start the multi-container application stack by running ```compose.sh``` with one of two options. To run in foreground chose ```start-foreground```. To run in detached mode chose ```start-background```. For debugging and learning purposes it is good to run in the foreground.
+Once the images are built, you can start the multi-container application stack by running ```compose.sh``` with one of two options. To run in foreground choose ```start-foreground```. To run in detached mode choose ```start-background```. For debugging and learning purposes it is good to run in the foreground.
 ```
 ➜  docker-kafka-storm git:(master) ./compose.sh
 Usage: ./compose.sh {start-foreground|start-background|stop}
