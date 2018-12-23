@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ZK_HOST=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' dockerkafkastorm_zookeeper_1)
+ZK_HOST=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' docker-kafka-storm_zookeeper_1)
 # Only works for container ports, that are mapped/exposed on the Host
-ZK_PORT=$(docker inspect --format '{{ (index (index .NetworkSettings.Ports "2181/tcp") 0).HostPort }}' dockerkafkastorm_zookeeper_1)
+ZK_PORT=$(docker inspect --format '{{ (index (index .NetworkSettings.Ports "2181/tcp") 0).HostPort }}' docker-kafka-storm_zookeeper_1)
 
 # create topic
 docker run -it --rm \

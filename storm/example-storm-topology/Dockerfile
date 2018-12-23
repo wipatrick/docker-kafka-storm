@@ -1,11 +1,11 @@
-FROM maven:3.2.5-jdk-8u40
+FROM maven:openjdk:12-jdk
 
 MAINTAINER wipatrick
 
 RUN apt-get update && \
     apt-get install -y unzip wget
 
-RUN wget -q -O - http://mirrors.sonic.net/apache/storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz | tar -xzf - -C /opt
+RUN wget -q -O - https://archive.apache.org/dist/storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz | tar -xzf - -C /opt
 
 ENV STORM_HOME /opt/apache-storm-0.9.4
 

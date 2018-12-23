@@ -3,3 +3,11 @@
 target/
 *.jar
 *.iml
+kafka/example-kafka-producer/.classpath
+kafka/example-kafka-producer/.project
+kafka/example-kafka-producer/.settings/
+kafka/example-kafka-producer/bin/
+storm/example-storm-topology/.classpath
+storm/example-storm-topology/.project
+storm/example-storm-topology/.settings/
+storm/example-storm-topology/bin/
