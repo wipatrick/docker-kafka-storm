@@ -61,11 +61,11 @@ Once the images are built, you can start the multi-container application stack b
 ➜  docker-kafka-storm git:(master) ./compose.sh
 Usage: ./compose.sh {start-foreground|start-background|stop}
 ➜  docker-kafka-storm git:(master) ./compose.sh start-foreground
-Creating dockerkafkastorm_zookeeper_1
-Creating dockerkafkastorm_nimbus_1
-Creating dockerkafkastorm_stormui_1
-Creating dockerkafkastorm_supervisor_1
-Creating dockerkafkastorm_kafka_1
+Creating docker-kafka-storm_zookeeper_1
+Creating docker-kafka-storm_nimbus_1
+Creating docker-kafka-storm_stormui_1
+Creating docker-kafka-storm_supervisor_1
+Creating docker-kafka-storm_kafka_1
 ...
 ```
 
@@ -120,11 +120,11 @@ You can kill the Storm topology by executing ```kill-storm-topology.sh``` and pa
 To stop the running multi-container application stack execute ```compose.sh``` again, but this time with ```stop``` as the option.
 ```shell
 ➜  docker-kafka-storm git:(master) ./compose.sh stop
-Stopping dockerkafkastorm_kafka_1 ... done
-Stopping dockerkafkastorm_supervisor_1 ... done
-Stopping dockerkafkastorm_stormui_1 ... done
-Stopping dockerkafkastorm_nimbus_1 ... done
-Stopping dockerkafkastorm_zookeeper_1 ... done
+Stopping docker-kafka-storm_kafka_1 ... done
+Stopping docker-kafka-storm_supervisor_1 ... done
+Stopping docker-kafka-storm_stormui_1 ... done
+Stopping docker-kafka-storm_nimbus_1 ... done
+Stopping docker-kafka-storm_zookeeper_1 ... done
 ```
 ## Optional scripts
 Optionally, you can see the produced messages by starting a Kafka consumer in the console an subscribing to the specified topic.
@@ -140,10 +140,10 @@ Furthermore, to clean up the Exited Containers you can execute ```cleanup.sh``` 
 ```shell
 ➜  docker-kafka-storm git:(master) docker ps -a
 CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS                        PORTS               NAMES
-77c0b9643af7        dockerkafkastorm_kafka        "/start.sh"              33 seconds ago      Exited (137) 10 seconds ago                       dockerkafkastorm_kafka_1
-fcdde25d83c8        dockerkafkastorm_supervisor   "/bin/sh -c /usr/bin/"   33 seconds ago      Exited (137) 10 seconds ago                       dockerkafkastorm_supervisor_1
-8ddbb82fe8cf        dockerkafkastorm_stormui      "/bin/sh -c /usr/bin/"   34 seconds ago      Exited (137) 10 seconds ago                       dockerkafkastorm_stormui_1
-f580b44212bc        dockerkafkastorm_nimbus       "/bin/sh -c /usr/bin/"   34 seconds
+77c0b9643af7        docker-kafka-storm_kafka        "/start.sh"              33 seconds ago      Exited (137) 10 seconds ago                       docker-kafka-storm_kafka_1
+fcdde25d83c8        docker-kafka-storm_supervisor   "/bin/sh -c /usr/bin/"   33 seconds ago      Exited (137) 10 seconds ago                       docker-kafka-storm_supervisor_1
+8ddbb82fe8cf        docker-kafka-storm_stormui      "/bin/sh -c /usr/bin/"   34 seconds ago      Exited (137) 10 seconds ago                       docker-kafka-storm_stormui_1
+f580b44212bc        docker-kafka-storm_nimbus       "/bin/sh -c /usr/bin/"   34 seconds
 ➜  docker-kafka-storm git:(master) ./cleanup.sh
 77c0b9643af7
 fcdde25d83c8
